@@ -8,10 +8,12 @@ module.exports = app=>{
     const Tasks = app.models.tasks;
 
     app.route('/tasks')
+        .all(app.auth.authenticate())
         .get( async (req,res)=>{
             // "/tasks" listas de tarefas
             try {
-                const results = await Tasks.findAll()
+                const where = {userId: req.user.id}
+                const results = await Tasks.findAll({where})
                 res.json(results)
             } catch (err) {
                 res.status(412).json({msg: err.message})
@@ -19,6 +21,7 @@ module.exports = app=>{
         }).post(async (req, res)=>{
             // "/tasks" cadastra uma nova tarefa
             try {
+                req.body.userId = req.user.id
                 const result = await Tasks.create(req.body);
                 res.json(result)
             } catch (err) {
@@ -27,11 +30,12 @@ module.exports = app=>{
         })
 
     app.route('/tasks/:id')
+        .all(app.auth.authenticate())
         .get(async (req,res)=>{
             // "/tasks/1" consulta de tarefas
             try {
                 const {id} = req.params;
-                const where = {id};
+                const where = {id, userId: req.user.id};
                 const result = await Tasks.findOne({where});
                 if(result){
                     res.json(result)
@@ -45,7 +49,8 @@ module.exports = app=>{
             // "/taks/1" atulaiza uma tarefa
             try {
                 const {id} = req.params;
-                const where = {id};
+                const where = {id, userId: req.user.id};
+                req.body.userId = req.user.id
                 await Tasks.update(req.body, {where});
                 res.sendStatus(204);
             } catch (err) {
@@ -56,7 +61,7 @@ module.exports = app=>{
             // "taskas/1" exclui uma tarefa
             try{
                 const {id} = req.params;
-                const where = {id};
+                const where = {id, userId: req.user.id};
                 await Tasks.destroy({where})
                 res.sendStatus(204)
             } catch (err){
