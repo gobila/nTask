@@ -3,7 +3,8 @@ const config = require('./config');
 
 let sequelize = null;
 const {
-  db: { database, username, password, params }
+  db: { database, username, password },
+  params
 } = config;
 
 module.exports = () => {
@@ -12,8 +13,7 @@ module.exports = () => {
       database,
       username,
       password,
-      params
-    );
+      params);
   }
   return sequelize;
 };

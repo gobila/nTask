@@ -1,4 +1,4 @@
-const passport = requiere('passport');
+const passport = require('passport');
 const {Strategy,  ExtractJwt} = require('passport-jwt');
 const config = require('./config');
 
