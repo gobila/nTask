@@ -3,21 +3,21 @@ const {Strategy,  ExtractJwt} = require('passport-jwt');
 const config = require('./config');
 
 module.exports = (app)=>{
-    const users = app.models.users;
+    const Users = app.models.users;
     const {jwt} = config;
 
     const params = {
         secretOrKey: jwt.secret,
-        jwtFromRequest:ExtractJwt.fromHeader('Authorization')
+        jwtFromRequest: ExtractJwt.fromHeader('authorization')
     };
 
     passport.use(
-        new Strategy(params, async(payload, done)=>{
+        new Strategy(params, async (payload, done)=>{
             try {
                 const {id} = payload;
                 const attributes = [ 'id', 'email'];
                 const options ={attributes};
-                const user = await users.findByPK(id, options);
+                const user = await Users.findByPk(id, options);
                 done(null, user)
             } catch (err) {
                 done(null, err)
