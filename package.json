@@ -5,8 +5,15 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "apidoc": "apidoc -i routes/ -o public/apidoc",
     "set-env": "set NODE_ENV=test",
     "test": "SET NODE_ENV=test && mocha test/**/*.js"
+  },
+  "apidoc":{
+    "name":"Documentação Node  Task API",
+    "template":{
+      "forceLanguage": "pt_br"
+    }
   },
   "author": "Moises C. Paula",
   "license": "ISC",
@@ -22,6 +29,7 @@
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {
+    "apidoc": "^1.2.0",
     "chai": "^4.3.10",
     "cross-env": "^7.0.3",
     "mocha": "^10.2.0",
